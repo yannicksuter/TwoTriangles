@@ -7,6 +7,12 @@ project (twotriangles)
 list(APPEND CMAKE_CXX_FLAGS "-std=c++11")
 add_definitions(-Wall)
 
+if(NOT MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations -Wno-writable-strings -Wdelete-non-virtual-dtor")
+else(NOT MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4005 /wd4305 /wd4018")
+endif(NOT MSVC)
+
 # glfw
 set(GLFW_BUILD_EXAMPLES OFF CACHE STRING "" FORCE)
 set(GLFW_BUILD_TESTS    OFF CACHE STRING "" FORCE)

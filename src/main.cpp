@@ -1,6 +1,8 @@
-#include <iostream>
+#include "twotriangles.h"
 
 int main() {
-    std::cout << "Fool! Are these triangles??!" << std::endl;
+    if (System::Instance()->Initialize(1024, 768, 1, false)) {
+        System::Instance()->Run();
+    }
     return 0;
 }

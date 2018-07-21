@@ -4,6 +4,7 @@ wherewasi (v.1)
 ---------------
 
 - read: http://antongerdelan.net/opengl/hellotriangle.html
+- read: https://github.com/ArthurSonzogni/OpenGL_CMake_Skeleton
 - initial project setup
 
 build
