@@ -30,10 +30,9 @@ bool System::Initialize(int width, int height, int samples, bool fullscreen) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    m_window = glfwCreateWindow(m_width, m_height, "Singularity", NULL, NULL);
+    m_window = glfwCreateWindow(m_width, m_height, "TwoTriangles", NULL, NULL);
     if (m_window == NULL) {
         LOG_FATAL("Failed to open GLFW window.");
         glfwTerminate();
@@ -93,7 +92,10 @@ void System::Run() {
         // process events
         glfwPollEvents();
 
-        // todo: render
+        // render
+        glClearColor(0,0,0,0);
+        glDepthMask(GL_TRUE);
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
         glfwSwapBuffers(m_window);
     }
