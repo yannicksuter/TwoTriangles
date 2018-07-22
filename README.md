@@ -2,10 +2,9 @@ I want to explore how raymarching and other shader-selfcontained drawing technic
 
 wherewasi (v.1)
 ---------------
-
-- read: http://antongerdelan.net/opengl/hellotriangle.html
-- read: https://github.com/ArthurSonzogni/OpenGL_CMake_Skeleton
-- initial project setup
+- add fullscreen triangles
+- add shader
+- start exploring marching rays....
 
 build
 -----
@@ -30,3 +29,7 @@ git submodule update
 - glfw: https://github.com/glfw/glfw
 - glm: https://github.com/g-truc/glm
 
+reads
+-----
+- http://antongerdelan.net/opengl/hellotriangle.html
+- https://github.com/ArthurSonzogni/OpenGL_CMake_Skeleton
