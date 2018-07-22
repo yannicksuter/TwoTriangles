@@ -25,9 +25,76 @@ bool System::Initialize(int width, int height, int samples, bool fullscreen) {
         return false;
     }
 
+    glfwWindowHint(GLFW_SAMPLES, m_samples);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
+    m_window = glfwCreateWindow(m_width, m_height, "Singularity", NULL, NULL);
+    if (m_window == NULL) {
+        LOG_FATAL("Failed to open GLFW window.");
+        glfwTerminate();
+        return false;
+    }
+    glfwMakeContextCurrent(m_window);
+
+    // initialize GLEW
+    glewExperimental = GL_TRUE;
+    if (glewInit() != GLEW_OK) {
+        LOG_FATAL("Failed to initialize GLEW.");
+        glfwTerminate();
+        return false;
+    }
+
+    // initialize input manager
+    Input::Instance()->Initialize(m_window);
+
+    // initialize viewport
+    glfwGetFramebufferSize(m_window, &m_screenWidth, &m_screenHeight);
+    if (m_width != m_screenWidth || m_height != m_screenHeight) {
+        LOG_MSG("Retina screen detected!");
+        m_retina = true;
+    }
+
+    glViewport(0, 0, m_screenWidth, m_screenHeight);
+    glEnable(GL_DEPTH_TEST);
+
+    LOG_MSG("Output config: %dx%d,%dx fullscreen=%s", m_screenWidth, m_screenHeight, m_samples, m_fullscreen ? "true" : "false");
+    LOG_MSG("GL_VENDOR/RENDERER: %s, %s", (char*)glGetString(GL_VENDOR), (char*)glGetString(GL_RENDERER));
+    LOG_MSG("GL_VERSION: %s", (char*)glGetString(GL_VERSION));
+    LOG_MSG("GL_SHADING_LANGUAGE_VERSION: %s", (char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+    int drawBufferCount = 0;
+    glGetIntegerv(GL_MAX_DRAW_BUFFERS, &drawBufferCount);
+    LOG_MSG("Deferred rendering: max buffer count [%d]", drawBufferCount);
+
     return true;
 }
 
 void System::Run() {
-    // todo
+    GLfloat deltaTime = 0;
+    GLfloat totalTime = 0;
+    GLfloat currentTime = (GLfloat)glfwGetTime();
+    GLfloat lastTime = currentTime;
+
+    while (!glfwWindowShouldClose(m_window)) {
+        currentTime = (GLfloat)glfwGetTime();
+        if (!Input::Instance()->IsKeyPressed(GLFW_KEY_SPACE)) {
+            deltaTime = currentTime - lastTime;
+            totalTime += deltaTime;
+            lastTime = currentTime;
+        } else {
+            lastTime = currentTime;
+        }
+
+        // process events
+        glfwPollEvents();
+
+        // todo: render
+
+        glfwSwapBuffers(m_window);
+    }
 }
