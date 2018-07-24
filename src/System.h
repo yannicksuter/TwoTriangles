@@ -15,16 +15,16 @@ public:
         return &inst;
     }
 
-    bool Initialize(int width, int height, int samples, bool fullscreen);
-    void Run();
+    bool initialize(int width, int height, int samples, bool fullscreen);
+    bool run(Renderer*);
 
-    inline bool IsFullscreen() { return m_fullscreen; }
-    inline bool IsRetina() { return m_retina; }
-    inline int GetScreenWidth() { return m_screenWidth; }
-    inline int GetScreenHeight() { return m_screenHeight; }
-    inline int GetWidth() { return m_width; }
-    inline int GetHeight() { return m_height; }
-    inline GLuint GetSampling() { return m_samples; }
+    inline bool isFullscreen() { return m_fullscreen; }
+    inline bool isRetina() { return m_retina; }
+    inline int getScreenWidth() { return m_screenWidth; }
+    inline int getScreenHeight() { return m_screenHeight; }
+    inline int getWidth() { return m_width; }
+    inline int getHeight() { return m_height; }
+    inline GLuint getSampling() { return m_samples; }
 
 private:
     GLFWwindow* m_window;

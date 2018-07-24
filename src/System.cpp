@@ -13,7 +13,7 @@ System::~System() {
     glfwTerminate();
 }
 
-bool System::Initialize(int width, int height, int samples, bool fullscreen) {
+bool System::initialize(int width, int height, int samples, bool fullscreen) {
     m_width = width;
     m_height = height;
     m_fullscreen = fullscreen;
@@ -49,7 +49,7 @@ bool System::Initialize(int width, int height, int samples, bool fullscreen) {
     }
 
     // initialize input manager
-    Input::Instance()->Initialize(m_window);
+    Input::Instance()->initialize(m_window);
 
     // initialize viewport
     glfwGetFramebufferSize(m_window, &m_screenWidth, &m_screenHeight);
@@ -73,15 +73,20 @@ bool System::Initialize(int width, int height, int samples, bool fullscreen) {
     return true;
 }
 
-void System::Run() {
+bool System::run(Renderer *pRenderer) {
     GLfloat deltaTime = 0;
     GLfloat totalTime = 0;
     GLfloat currentTime = (GLfloat)glfwGetTime();
     GLfloat lastTime = currentTime;
 
+    if (!pRenderer->initialize()) {
+        LOG_FATAL("Failed to initialize renderer.");
+        return false;
+    }
+
     while (!glfwWindowShouldClose(m_window)) {
         currentTime = (GLfloat)glfwGetTime();
-        if (!Input::Instance()->IsKeyPressed(GLFW_KEY_SPACE)) {
+        if (!Input::Instance()->isKeyPressed(GLFW_KEY_SPACE)) {
             deltaTime = currentTime - lastTime;
             totalTime += deltaTime;
             lastTime = currentTime;
@@ -93,10 +98,11 @@ void System::Run() {
         glfwPollEvents();
 
         // render
-        glClearColor(0,0,0,0);
-        glDepthMask(GL_TRUE);
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+        glViewport(0, 0, m_screenWidth, m_screenHeight);
+        pRenderer->render();
 
         glfwSwapBuffers(m_window);
     }
+
+    return true;
 }

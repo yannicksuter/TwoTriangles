@@ -33,23 +33,23 @@ protected:
 	Input();
 	~Input();
 
-	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
-	static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-	static void MouseCallback(GLFWwindow* window, double xpos, double ypos);
-	static void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+	static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mode);
+	static void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
+	static void mouseCallback(GLFWwindow *window, double xpos, double ypos);
+	static void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);
 
 public:
-	void Initialize(GLFWwindow *pWindow);
-	void SetMouseOffset(double fOffsetX, double fOffsetY);
-	bool IsKeyPressed(int key);
+	void initialize(GLFWwindow *pWindow);
+	void setMouseOffset(double fOffsetX, double fOffsetY);
+	bool isKeyPressed(int key);
 
-    void RegisterOnMousePressCallback(std::function<void(MouseEvent*)> fn) {
+    void registerOnMousePressCallback(std::function<void(MouseEvent*)> fn) {
         m_onMousePressCallbacks.push_back(fn);
     }
-    void RegisterOnMouseReleaseCallback(std::function<void(MouseEvent *)> fn) {
+    void registerOnMouseReleaseCallback(std::function<void(MouseEvent *)> fn) {
         m_onMouseReleaseCallbacks.push_back(fn);
     }
-    void RegisterOnKeyCallback(std::function<void(KeyEvent*)> fn) {
+    void registerOnKeyCallback(std::function<void(KeyEvent *)> fn) {
         m_onKeyCallbacks.push_back(fn);
     }
 

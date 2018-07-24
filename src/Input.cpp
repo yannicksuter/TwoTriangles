@@ -11,13 +11,13 @@ Input::Input() {
 Input::~Input() {
 }
 
-void Input::Initialize(GLFWwindow *pWindow) {
+void Input::initialize(GLFWwindow *pWindow) {
 	m_window = pWindow;
 
-	glfwSetKeyCallback(pWindow, KeyCallback);
-	glfwSetMouseButtonCallback(pWindow, MouseButtonCallback);
-	glfwSetCursorPosCallback(pWindow, MouseCallback);
-	glfwSetScrollCallback(pWindow, ScrollCallback);
+    glfwSetKeyCallback(pWindow, keyCallback);
+    glfwSetMouseButtonCallback(pWindow, mouseButtonCallback);
+    glfwSetCursorPosCallback(pWindow, mouseCallback);
+    glfwSetScrollCallback(pWindow, scrollCallback);
 
 	// initialize cursor position to prevent jumps
     double x,y;
@@ -25,7 +25,7 @@ void Input::Initialize(GLFWwindow *pWindow) {
     m_mousePosition = glm::vec2(x,y);
 }
 
-void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mode) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GL_TRUE);
     }
@@ -35,9 +35,9 @@ void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
         if (inst->m_onKeyCallbacks.size() > 0) {
             KeyEvent event;
             event._key = key;
-            event._altPressed = inst->IsKeyPressed(GLFW_KEY_LEFT_ALT) || inst->IsKeyPressed(GLFW_KEY_RIGHT_ALT);
-            event._cntrlPressed = inst->IsKeyPressed(GLFW_KEY_LEFT_CONTROL) || inst->IsKeyPressed(GLFW_KEY_RIGHT_CONTROL);
-            event._shiftPressed = inst->IsKeyPressed(GLFW_KEY_LEFT_SHIFT) || inst->IsKeyPressed(GLFW_KEY_RIGHT_SHIFT);
+            event._altPressed = inst->isKeyPressed(GLFW_KEY_LEFT_ALT) || inst->isKeyPressed(GLFW_KEY_RIGHT_ALT);
+            event._cntrlPressed = inst->isKeyPressed(GLFW_KEY_LEFT_CONTROL) || inst->isKeyPressed(GLFW_KEY_RIGHT_CONTROL);
+            event._shiftPressed = inst->isKeyPressed(GLFW_KEY_LEFT_SHIFT) || inst->isKeyPressed(GLFW_KEY_RIGHT_SHIFT);
             for (int i = 0; i < inst->m_onKeyCallbacks.size(); i++) {
                 inst->m_onKeyCallbacks[i](&event);
             }
@@ -45,14 +45,14 @@ void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
     }
 }
 
-void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
     MouseEvent event;
     Input *inst = Input::Instance();
     event._button = IB_UNDEFINED;
     event._coords = Input::Instance()->m_mousePosition;
-    event._altPressed = inst->IsKeyPressed(GLFW_KEY_LEFT_ALT) || inst->IsKeyPressed(GLFW_KEY_RIGHT_ALT);
-    event._cntrlPressed = inst->IsKeyPressed(GLFW_KEY_LEFT_CONTROL) || inst->IsKeyPressed(GLFW_KEY_RIGHT_CONTROL);
-    event._shiftPressed = inst->IsKeyPressed(GLFW_KEY_LEFT_SHIFT) || inst->IsKeyPressed(GLFW_KEY_RIGHT_SHIFT);
+    event._altPressed = inst->isKeyPressed(GLFW_KEY_LEFT_ALT) || inst->isKeyPressed(GLFW_KEY_RIGHT_ALT);
+    event._cntrlPressed = inst->isKeyPressed(GLFW_KEY_LEFT_CONTROL) || inst->isKeyPressed(GLFW_KEY_RIGHT_CONTROL);
+    event._shiftPressed = inst->isKeyPressed(GLFW_KEY_LEFT_SHIFT) || inst->isKeyPressed(GLFW_KEY_RIGHT_SHIFT);
 
     if (button == GLFW_MOUSE_BUTTON_LEFT) {
         inst->m_leftMouseDown = (action == GLFW_PRESS);
@@ -79,7 +79,7 @@ void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int 
     }
 }
 
-void Input::MouseCallback(GLFWwindow* window, double xpos, double ypos) {
+void Input::mouseCallback(GLFWwindow *window, double xpos, double ypos) {
     Input::Instance()->m_mousePosition = glm::vec2(xpos, ypos);
 }
 
@@ -90,11 +90,11 @@ inline T Clamp(T val, T min, T max) {
 	return val;
 }
 
-void Input::ScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+void Input::scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     Input::Instance()->m_mouseScroll.x = Clamp(Input::Instance()->m_mouseScroll.x + ((float)xoffset / Input::Instance()->m_mouseSensitivity), 0.f, 1.f);
     Input::Instance()->m_mouseScroll.y = Clamp(Input::Instance()->m_mouseScroll.y + ((float)yoffset / Input::Instance()->m_mouseSensitivity), 0.f, 1.f);
 }
 
-bool Input::IsKeyPressed(int key) {
+bool Input::isKeyPressed(int key) {
 	return glfwGetKey(m_window, key) == GLFW_PRESS;
 }
