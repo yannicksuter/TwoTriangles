@@ -2,9 +2,7 @@ I want to explore how raymarching and other shader-selfcontained drawing technic
 
 wherewasi (v.1)
 ---------------
-- add fullscreen triangles
-- add shader
-- start exploring marching rays....
+- finally, start exploring marching rays....
 
 build
 -----

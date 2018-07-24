@@ -91,12 +91,12 @@ bool Renderer::initFullScreenQuad() {
 }
 
 bool Renderer::initShaderProgram() {
-    if (!m_shader.loadVertexShader("Shaders\\shader.vert")) {
+    if (!m_shader.loadVertexShader("shaders/shader.vert")) {
         LOG_FATAL("Error loading vertex shader: %s.", m_shader.lastError().c_str());
         return false;
     }
 
-    if (!m_shader.loadFragmentShader("Content\\Shaders\\FullScreenQuad.frag")) {
+    if (!m_shader.loadFragmentShader("shaders/shader.frag")) {
         LOG_FATAL("Error loading fragment shader: %s.", m_shader.lastError().c_str());
         return false;
     }
